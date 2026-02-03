@@ -13,14 +13,8 @@ export type IAllowProviderRepository = {
 
 export const AllowProviderRepository: IAllowProviderRepository = {
     add: async (provider) => {
-        const providerExists = await prisma.allowProvider.findUnique({
-            where: {
-                provedor: provider
-            }
-        })
-        if (providerExists) {
-            return "provedor ja existe"
-        }
+
+
         try {
             return await prisma.allowProvider.create({
                 data: {
