@@ -88,7 +88,9 @@ export function authRoutes(app: Express, client: Client<true>) {
             }
 
             const user = userResult.data;
-            if (vpnData?.proxy === true && !allowProvider.includes(asn)) {
+            const isAllowed = allowProvider.some(p => p.provedor === asn);
+
+            if (vpnData?.proxy === true && !isAllowed) {
                 if (channel && 'send' in channel) {
                     channel.send(log({
                         status: false,

@@ -123,7 +123,7 @@ model Voto {
   @@index([messageId])
 }
 
-model allowProvider {
+model AllowProvider {
   id       Int    @id @default(autoincrement())
   provedor String @db.VarChar(255)
 }

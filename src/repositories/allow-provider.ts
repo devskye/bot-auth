@@ -6,46 +6,37 @@ export type AllowProvider = {
 }
 
 export type IAllowProviderRepository = {
-    add: (provider: string) => Promise<string>
-    remove: (id: number) => Promise<string | void>
+    add: (provider: string) => Promise<AllowProvider>
+    remove: (id: number) => Promise<AllowProvider>
     findAll: () => Promise<AllowProvider[]>
 }
 
 export const AllowProviderRepository: IAllowProviderRepository = {
-    add: async (provider) => {
-
-
+    async add(provider) {
         try {
             return await prisma.allowProvider.create({
-                data: {
-                    provedor: provider
-                }
+                data: { provedor: provider }
             })
         } catch (error) {
-            console.log(error)
-            return "Error ao adicionar provedor"
+            throw new Error("Erro ao adicionar provedor")
         }
     },
 
-    remove: async (id) => {
+    async remove(id) {
         try {
             return await prisma.allowProvider.delete({
-                where: {
-                    id
-                }
+                where: { id }
             })
         } catch (error) {
-            console.log(error)
-            return "Error ao remover provedor"
+            throw new Error("Provedor não encontrado ou erro ao remover")
         }
     },
 
-    findAll: async () => {
+    async findAll() {
         try {
             return await prisma.allowProvider.findMany()
         } catch (error) {
-            console.log(error)
-            return []
+            throw new Error("Erro ao buscar provedores")
         }
     }
 }

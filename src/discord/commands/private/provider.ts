@@ -44,40 +44,57 @@ createCommand({
     async run(interaction) {
         const { options } = interaction;
         const subcommand = options.getSubcommand(true);
-        switch (subcommand) {
-            case "adicionar": {
-                await interaction.deferReply({ ephemeral: true });
-                const provider = options.getString("provedor", true);
-                const result = await AllowProviderRepository.add(provider);
-                if (result) {
-                    interaction.editReply(res.danger(result));
+
+        await interaction.deferReply({ ephemeral: true });
+
+        try {
+            switch (subcommand) {
+
+                case "adicionar": {
+                    const provider = options.getString("provedor", true);
+
+                    const result = await AllowProviderRepository.add(provider);
+
+                    interaction.editReply(
+                        res.success(`Provedor **${result.provedor}** adicionado com sucesso`)
+                    );
                     return;
                 }
-                interaction.editReply(res.success("Provedor adicionado com sucesso"));
-                return;
-            }
-            case "remover": {
-                await interaction.deferReply({ ephemeral: true });
-                const id = options.getInteger("id", true);
-                const result = await AllowProviderRepository.remove(id);
-                if (result) {
-                    interaction.editReply(res.danger(result));
+
+                case "remover": {
+                    const id = options.getInteger("id", true);
+
+                    const result = await AllowProviderRepository.remove(id);
+
+                    interaction.editReply(
+                        res.success(`Provedor **${result.provedor}** removido com sucesso`)
+                    );
                     return;
                 }
-                interaction.editReply(res.success("Provedor removido com sucesso"));
-                return;
-            }
-            case "listar": {
-                await interaction.deferReply({ ephemeral: true });
-                const providers = await AllowProviderRepository.findAll();
-                if (providers.length === 0) {
-                    interaction.editReply(res.danger("Nenhum provedor encontrado."));
+
+                case "listar": {
+                    const providers = await AllowProviderRepository.findAll();
+
+                    if (providers.length === 0) {
+                        interaction.editReply(
+                            res.danger("Nenhum provedor encontrado.")
+                        );
+                        return;
+                    }
+
+                    const content = providers
+                        .map(p => `🆔 ${p.id} • ${p.provedor}`)
+                        .join("\n");
+
+                    interaction.editReply(res.success(content));
                     return;
                 }
-                const content = providers.map(p => `ID: ${p.id} - Provedor: ${p.provedor}`).join("\n");
-                interaction.editReply(res.success(content));
-                return;
             }
+
+        } catch (error: any) {
+            interaction.editReply(
+                res.danger(error.message || "Erro inesperado")
+            );
         }
     }
 });
