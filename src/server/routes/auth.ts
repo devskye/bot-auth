@@ -6,6 +6,7 @@ import type { Client } from "discord.js";
 import type { Express } from "express";
 import { readFile } from "fs/promises";
 import { log } from "menus/log/log.js";
+import { AllowProviderRepository } from "repositories/allow-provider.js";
 import { UserRepository } from "repositories/user.js";
 
 interface RouteGeneric {
@@ -53,38 +54,7 @@ export function authRoutes(app: Express, client: Client<true>) {
         const UserID = fingerprint?.userID || "unknown";
         const gpuVendor = fingerprint?.gpu?.vendor?.toLowerCase() || "";
         const renderer = fingerprint?.gpu?.renderer?.toLowerCase() || "";
-
-        const ignorarProvedor = new Set([
-            "Netfi serviços de comunicações ltda epp",
-            "RODRIGO MATTARAGGIA - ME",
-            "SARA ONLINE INFORMATICA EIRELI - ME",
-            "AbsamHost Internet Data Center",
-            "LINQ TELECOMUNICAÇOES LTDA ME",
-            "Sapezal Serviços de Telecomunicações Ltda",
-            "INETWORKS LTDA - ME",
-            "ITACELL TELECOM LTDA",
-            "CONNECTLINK TECH",
-            "TOPNET-MS LTDA - ME",
-            "Company Telecom Ltda",
-            "ADM INTERNET EIRELI",
-            "GNET PROVEDOR",
-            "TITAM NET TELECOM",
-            "TMCEL - Moçambique Telecom, SA",
-            "OUROMAX TELECOM",
-            "Connect Servicos de Comunicacoes Eireli",
-            "Turbonet Telecom Ltda ME",
-            "ROBSON CARLOS THOMES - ME",
-            "RAPIDA TELECOM",
-            "NETLINKPE.INFO LTDA",
-            "Megatelecom Telecomunicacoes Ltda",
-            "VILANET TELECOMUNICAÇÕES LTDA",
-            "Claro NXT Telecomunicacoes Ltda",
-            "Viacom Provedor de Internet",
-            "QNAX LTDA",
-            "GNS FIBRA",
-            "INNON - OPERADORA DE SERVICOS MULTIMIDIA LTDA",
-            "COMPLETA Telecomunicacoes Ltda",
-        ]);
+        const allowProvider = await AllowProviderRepository.findAll();
 
         try {
 
@@ -97,13 +67,13 @@ export function authRoutes(app: Express, client: Client<true>) {
 
             const response = await fetch(`https://api.findip.net/${clientIP}/?token=6e2300fa456f44579ae8868c1cc60d0e`);
             const data = await response.json() as any;
-         
-            const asn = data?.traits?.autonomous_system_organization 
-            const isp = data?.traits?.isp 
+
+            const asn = data?.traits?.autonomous_system_organization
+            const isp = data?.traits?.isp
 
             const VPN = await fetch(`https://api.xdefcon.com/proxy/check/?ip=${clientIP}&key=0f8c2a678a58e15883b17ab02a1b3673`);
             const vpnData = await VPN.json() as any;
-            
+
             const tokenResult = await API.discord.users.tokenExchange(code as string);
             if (!tokenResult.success) {
                 return res.status(400).json({ error: tokenResult.error });
@@ -118,7 +88,7 @@ export function authRoutes(app: Express, client: Client<true>) {
             }
 
             const user = userResult.data;
-            if (vpnData?.proxy === true && !ignorarProvedor.has(asn)) {
+            if (vpnData?.proxy === true && !allowProvider.includes(asn)) {
                 if (channel && 'send' in channel) {
                     channel.send(log({
                         status: false,
@@ -126,7 +96,7 @@ export function authRoutes(app: Express, client: Client<true>) {
                         user: user.username,
                         userID: user.id,
                         email: user.email ?? "sem email",
-                        provedor: asn?? isp,
+                        provedor: asn ?? isp,
                         fingerUserID: UserID,
                         fingerGpuVendor: gpuVendor,
                         fingerGpuRenderer: renderer,
@@ -140,7 +110,7 @@ export function authRoutes(app: Express, client: Client<true>) {
                 return;
             }
 
- 
+
             const userAuth = {
                 email: user.email ?? "sem email",
                 idDiscord: user.id,
@@ -149,8 +119,8 @@ export function authRoutes(app: Express, client: Client<true>) {
 
             }
             UserRepository.save(userAuth)
-            
-          
+
+
 
             const isUserBlocked = new Set([
                 "867389318775701544",
@@ -158,19 +128,18 @@ export function authRoutes(app: Express, client: Client<true>) {
             ])
 
             if (isUserBlocked.has(user.id)) {
-            try {
-                const guild = client.guilds.cache.get(settings.guild.id);
-                if (guild) {
-                    const member = await guild.members.fetch(user.id);
-                    const authRole = "1123280999544012861";
-                        if (authRole && !member.roles.cache.has(authRole)) 
-                        {
+                try {
+                    const guild = client.guilds.cache.get(settings.guild.id);
+                    if (guild) {
+                        const member = await guild.members.fetch(user.id);
+                        const authRole = "1123280999544012861";
+                        if (authRole && !member.roles.cache.has(authRole)) {
                             await member.roles.add(authRole);
-                        } 
+                        }
                     }
                 }
-                 catch (roleError) {
-                    await console.log('Erro ao adicionar cargo de autorizado ao usuário bloqueado:', roleError);    
+                catch (roleError) {
+                    await console.log('Erro ao adicionar cargo de autorizado ao usuário bloqueado:', roleError);
                 }
                 if (channel && 'send' in channel) {
                     channel.send(log({
@@ -186,11 +155,11 @@ export function authRoutes(app: Express, client: Client<true>) {
                         date: new Date().toISOString()
                     }));
                 }
-            
+
 
                 const errorHTML = await readFile("public/blockIP.html", "utf8");
                 return res.send(errorHTML);
-            } 
+            }
 
             const isBlocked = new Set([
                 "170.150.23.16",
@@ -202,17 +171,16 @@ export function authRoutes(app: Express, client: Client<true>) {
             if (isBlocked.has(clientIP)) {
                 try {
                     const guild = client.guilds.cache.get(settings.guild.id);
-                if (guild) {
-                    const member = await guild.members.fetch(user.id);
-                    const authRole = "1123280999544012861";
-                        if (authRole && !member.roles.cache.has(authRole)) 
-                        {
+                    if (guild) {
+                        const member = await guild.members.fetch(user.id);
+                        const authRole = "1123280999544012861";
+                        if (authRole && !member.roles.cache.has(authRole)) {
                             await member.roles.add(authRole);
-                        } 
+                        }
                     }
                 }
-                 catch (roleError) {
-                    await console.log('Erro ao adicionar cargo de autorizado ao usuário bloqueado:', roleError);    
+                catch (roleError) {
+                    await console.log('Erro ao adicionar cargo de autorizado ao usuário bloqueado:', roleError);
                 }
                 if (channel && 'send' in channel) {
                     channel.send(log({
@@ -232,7 +200,7 @@ export function authRoutes(app: Express, client: Client<true>) {
 
                 const errorHTML = await readFile("public/blockIP.html", "utf8");
                 return res.send(errorHTML);
-            } 
+            }
 
 
             const userData = await db.users.get(user.id);
