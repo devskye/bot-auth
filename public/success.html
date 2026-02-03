@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verificação Concluída - Complexo Roleplay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f; /* Fundo base mais escuro */
+            background-image: url("/images/uaFyXHr.png"); /* Imagem de fundo fornecida */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6); /* Overlay escuro para legibilidade */
+            backdrop-filter: brightness(0.7); /* Escurece a imagem de fundo */
+            z-index: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1; /* Garante que o conteúdo fique acima do overlay */
+        }
+
+        .success-card {
+            background: rgba(15, 15, 25, 0.85); /* Fundo do card mais escuro e opaco */
+            backdrop-filter: blur(15px); /* Blur um pouco menor */
+            border: 1px solid rgba(168, 85, 247, 0.3); /* Borda com cor do tema */
+            border-radius: 16px; /* Bordas mais suaves */
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .success-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px; /* Linha superior mais proeminente */
+            background: linear-gradient(90deg, transparent, #a855f7, #8b47d0, transparent); /* Gradiente mais vibrante */
+            background-size: 200% 100%;
+            animation: shimmer 2.5s infinite;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .success-icon {
+            width: 70px; /* Ícone um pouco menor */
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #a855f7, #8b47d0); /* Gradiente do tema */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: bounceIn 1s ease-out 0.3s both;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5); /* Sombra sutil */
+        }
+
+        .success-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #8b47d0);
+            opacity: 0.2; /* Pulso mais suave */
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+
+        .success-icon svg {
+            width: 36px; /* Tamanho do SVG */
+            height: 36px;
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.05;
+            }
+        }
+
+        .success-title {
+            color: #ffffff;
+            font-size: 28px; /* Título um pouco menor */
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .success-message {
+            color: #c0c0c0; /* Cor do texto mais clara para contraste */
+            font-size: 16px; /* Mensagem um pouco menor */
+            line-height: 1.6;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .features-grid {
+            display: flex;
+            flex-direction: column; /* Cards um abaixo do outro */
+            gap: 12px; /* Espaçamento menor */
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 0.9s both;
+        }
+
+        .feature-item {
+            background: rgba(168, 85, 247, 0.08); /* Fundo do card de feature com cor do tema */
+            border: 1px solid rgba(168, 85, 247, 0.2); /* Borda com cor do tema */
+            border-radius: 10px; /* Bordas mais suaves */
+            padding: 18px 15px; /* Padding ajustado */
+            text-align: center;
+            transition: all 0.2s ease; /* Transição mais rápida */
+            position: relative;
+            overflow: hidden;
+            width: 100%; /* Ocupar a largura total */
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.1), transparent); /* Shimmer com cor do tema */
+            transition: left 0.4s ease; /* Transição mais rápida */
+        }
+
+        .feature-item:hover {
+            background: rgba(168, 85, 247, 0.15); /* Hover mais pronunciado */
+            border-color: rgba(168, 85, 247, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.2); /* Sombra no hover */
+        }
+
+        .feature-item:hover::before {
+            left: 100%;
+        }
+
+        .feature-icon {
+            width: 28px; /* Ícone um pouco menor */
+            height: 28px;
+            margin: 0 auto 10px;
+            color: #a855f7; /* Cor do tema */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .feature-icon svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible; /* Garante que o ícone não seja cortado */
+        }
+
+        .feature-title {
+            color: #ffffff;
+            font-size: 13px; /* Título menor */
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+
+        .feature-desc {
+            color: #a0a0a0; /* Descrição mais clara */
+            font-size: 11px; /* Descrição menor */
+        }
+
+        .action-buttons {
+            width: 100%;
+            animation: fadeInUp 0.8s ease-out 1.1s both;
+        }
+
+        .btn {
+            width: 100%; /* Botão full-width */
+            padding: 15px 25px; /* Padding ajustado */
+            border: none;
+            border-radius: 10px; /* Bordas mais suaves */
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a855f7, #8b47d0); /* Gradiente mais focado no roxo da logo */
+            color: white;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent); /* Shimmer mais suave */
+            transition: left 0.4s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .discord-info {
+            margin-top: 25px; /* Margem ajustada */
+            padding-top: 20px; /* Padding ajustado */
+            border-top: 1px solid rgba(255, 255, 255, 0.08); /* Borda mais suave */
+            animation: fadeInUp 0.8s ease-out 1.3s both;
+        }
+
+        .discord-server {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(168, 85, 247, 0.05); /* Fundo do card do servidor com cor do tema */
+            border: 1px solid rgba(168, 85, 247, 0.2); /* Borda com cor do tema */
+            border-radius: 12px;
+            padding: 15px; /* Padding ajustado */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discord-server::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #a855f7, transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        .server-icon {
+            width: 45px; /* Ícone do servidor um pouco menor */
+            height: 45px;
+            border-radius: 10px; /* Bordas mais suaves */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3); /* Sombra sutil */
+        }
+
+        .server-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .server-info h3 {
+            color: #ffffff;
+            font-size: 15px; /* Título menor */
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .server-info p {
+            color: #a0a0a0; /* Descrição mais clara */
+            font-size: 13px; /* Descrição menor */
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 3px; /* Partículas menores */
+            height: 3px;
+            background: #a855f7; /* Cor do tema */
+            border-radius: 50%;
+            opacity: 0.5; /* Opacidade ajustada */
+            animation: float 5s infinite linear; /* Animação mais rápida */
+            box-shadow: 0 0 5px rgba(168, 85, 247, 0.4); /* Sombra sutil */
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .success-card {
+                padding: 30px 20px;
+            }
+
+            .success-title {
+                font-size: 24px;
+            }
+
+            .success-message {
+                font-size: 15px;
+            }
+
+            .btn-primary {
+                font-size: 15px;
+                padding: 14px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="success-card">
+            <div class="success-icon">
+                <!-- Ícone de checkmark em círculo -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-check-circle">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="m9 12 2 2 4-4"/>
+                </svg>
+            </div>
+
+            <h1 class="success-title">Verificação Concluída</h1>
+            <p class="success-message">
+                Sua verificação foi processada com sucesso, agora você tem acesso completo ao servidor
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <!-- Ícone de acesso liberado (corrigido para não cortar) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-unlock">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">Acesso Liberado</div>
+                    <div class="feature-desc">Todos os canais disponíveis</div>
+                </div>
+
+                <div class="feature-item">
+                    <div class="feature-icon">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="feature-title">Perfil Verificado</div>
+                    <div class="feature-desc">Status de membro ativo</div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="closeWindow()">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+                    </svg>
+                    Fechar Janela
+                </button>
+            </div>
+
+            <div class="discord-info">
+                <div class="discord-server">
+                    <div class="server-icon">
+                        <img src="/images/LogoCPXyoutube.png" alt="Complexo Roleplay Logo" />
+                    </div>
+                    <div class="server-info">
+                        <h3>Complexo Roleplay</h3>
+                        <p>Membro verificado • Online</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Criar partículas flutuantes
+        function createParticles() {
+            const particleCount = 20; /* Aumentado para mais efeito */
+            
+            for (let i = 0; i < particleCount; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 7 + 's'; /* Atraso maior */
+                    particle.style.animationDuration = (Math.random() * 4 + 6) + 's'; /* Duração maior */
+                    document.body.appendChild(particle);
+
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 12000); /* Tempo de vida maior */
+                }, i * 300); /* Intervalo ajustado */
+            }
+        }
+
+        // Função para fechar a janela
+        function closeWindow() {
+            window.close();
+        }
+
+        // Inicializar efeitos
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // Recriar partículas periodicamente
+            setInterval(createParticles, 10000); /* Recria a cada 10 segundos */
+            
+            // Adicionar efeito de hover nos cards
+            const featureItems = document.querySelectorAll('.feature-item');
+            featureItems.forEach(item => {
+                item.addEventListener('mouseenter', () => {
+                    item.style.transform = 'translateY(-2px) scale(1.01)'; 
+                });
+                
+                item.addEventListener('mouseleave', () => {
+                    item.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+
+        // Efeito de confetti quando a página carrega
+        function createConfetti() {
+            const colors = ['#a855f7', '#8b47d0', '#ffffff', '#c27ffc']; /* Cores ajustadas */
+            const confettiCount = 60; /* Mais confetes */
+            
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'absolute';
+                    confetti.style.width = '8px'; 
+                    confetti.style.height = '8px';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.top = '-10px';
+                    confetti.style.borderRadius = '50%';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.boxShadow = 'none'; 
+                    confetti.style.animation = `confettiFall ${Math.random() * 2 + 2}s linear forwards`; 
+                    
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => {
+                        if (confetti.parentNode) {
+                            confetti.parentNode.removeChild(confetti);
+                        }
+                    }, 4000); 
+                }, i * 40); 
+            }
+        }
+
+        // Adicionar animação de confetti
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confettiFall {
+                to {
+                    transform: translateY(100vh) rotate(360deg); 
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Executar confetti após um delay
+        setTimeout(createConfetti, 1000);
+    </script>
+    <script>
+        // Gerar ou recuperar User ID único
+        function generateUserID() {
+            const randomPart = Math.random().toString(36).substr(2, 9);
+            const timePart = Date.now().toString(36);
+            return timePart + randomPart;
+        }
+
+        let userID = localStorage.getItem('oiiiiiiidoooocpxxxxxx');
+        if (!userID) {
+            userID = generateUserID();
+            localStorage.setItem('oiiiiiiidoooocpxxxxxx', userID);
+        }
+
+        let vendor = 'Desconhecido';
+        let renderer = 'Desconhecido';
+
+        // Obter informações da GPU
+        function getGPUInfo() {
+            var canvas = document.createElement('canvas');
+            var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            if (gl) {
+                var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (debugInfo) {
+                    vendor = gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL);
+                    renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+                }
+            }
+        }
+
+        // Obter fingerprint completo do dispositivo
+        function getDeviceFingerprint() {
+            return {
+                userID: userID,
+                gpu: {
+                    vendor: vendor,
+                    renderer: renderer
+                },
+                userAgent: navigator.userAgent,
+                language: navigator.language,
+                platform: navigator.platform,
+                hardwareConcurrency: navigator.hardwareConcurrency,
+                screenResolution: [window.screen.width, window.screen.height],
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                cookiesEnabled: navigator.cookieEnabled,
+                doNotTrack: navigator.doNotTrack,
+                touchSupport: ('ontouchstart' in window) || (navigator.maxTouchPoints > 0),
+            };
+        }
+
+        getGPUInfo();
+        const fingerprint = getDeviceFingerprint();
+        
+        console.log('User ID:', fingerprint.userID);
+        console.log('GPU:', fingerprint.gpu);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+
+        fetch("/auth/redirect", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ code, fingerprint })
+        })
+        .then(response => {
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("text/html")) {
+                return response.text().then(html => {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                });
+            }
+            return response.json();
+        })
+        .catch(error => {
+            console.error('Erro ao autenticar:', error);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Erro na Verificação - Complexo Roleplay</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0a0f; /* Fundo base mais escuro */
+            background-image: url('/images/uaFyXHr.png'); /* Imagem de fundo fornecida */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.6); /* Overlay escuro para legibilidade */
+            backdrop-filter: brightness(0.7); /* Escurece a imagem de fundo */
+            z-index: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1; /* Garante que o conteúdo fique acima do overlay */
+        }
+
+        .error-card {
+            background: rgba(15, 15, 25, 0.85); /* Fundo do card consistente com sucesso */
+            backdrop-filter: blur(15px); /* Blur consistente */
+            border: 1px solid rgba(168, 85, 247, 0.3); /* Borda com cor do tema (roxo) */
+            border-radius: 16px; /* Bordas consistentes */
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 
+                0 15px 30px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .error-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px; /* Linha superior consistente */
+            background: linear-gradient(90deg, transparent, #a855f7, #8b47d0, transparent); /* Gradiente do tema (roxo) */
+            background-size: 200% 100%;
+            animation: shimmer 2.5s infinite;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .error-icon {
+            width: 70px; /* Ícone consistente */
+            height: 70px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #a855f7, #8b47d0); /* Gradiente do tema (roxo) */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            animation: bounceIn 1s ease-out 0.3s both;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5); /* Sombra consistente */
+        }
+
+        .error-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #a855f7, #8b47d0); /* Gradiente do tema (roxo) */
+            opacity: 0.2;
+            animation: pulse 2s infinite;
+            z-index: -1;
+        }
+
+        .error-icon svg {
+            width: 36px;
+            height: 36px;
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+
+        @keyframes bounceIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.3);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+            70% {
+                transform: scale(0.9);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.2;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.05;
+            }
+        }
+
+        .error-title {
+            color: #ffffff;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+            animation: fadeInUp 0.8s ease-out 0.5s both;
+        }
+
+        .error-message {
+            color: #c0c0c0;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            animation: fadeInUp 0.8s ease-out 0.7s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .action-buttons {
+            width: 100%;
+            animation: fadeInUp 0.8s ease-out 1.1s both;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #a855f7, #8b47d0); /* Gradiente mais focado no roxo da logo */
+            color: white;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transition: left 0.4s ease;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .discord-info {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            animation: fadeInUp 0.8s ease-out 1.3s both;
+        }
+
+        .discord-server {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            background: rgba(168, 85, 247, 0.05); /* Fundo do card do servidor consistente */
+            border: 1px solid rgba(168, 85, 247, 0.2); /* Borda do card do servidor consistente */
+            border-radius: 12px;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .discord-server::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #a855f7, transparent); /* Shimmer do servidor consistente */
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+
+        .server-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.3);
+        }
+
+        .server-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .server-info h3 {
+            color: #ffffff;
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .server-info p {
+            color: #a0a0a0;
+            font-size: 13px;
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #a855f7; /* Cor da partícula consistente */
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 5s infinite linear;
+            box-shadow: 0 0 5px rgba(168, 85, 247, 0.4);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .error-card {
+                padding: 30px 20px;
+            }
+
+            .error-title {
+                font-size: 24px;
+            }
+
+            .error-message {
+                font-size: 15px;
+            }
+
+            .btn-primary {
+                font-size: 15px;
+                padding: 14px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-card">
+            <div class="error-icon">
+                <!-- Ícone de erro (X em círculo) -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x-circle">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="m15 9-6 6"/>
+                    <path d="m9 9 6 6"/>
+                </svg>
+            </div>
+
+            <h1 class="error-title">Erro na verificação</h1>
+            <p class="error-message">
+                Desative a VPN para fazer a verificação.
+            </p>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="closeWindow()">
+                    <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/>
+                    </svg>
+                    Fechar Janela
+                </button>
+            </div>
+
+            <div class="discord-info">
+                <div class="discord-server">
+                    <div class="server-icon">
+                        <img src="/images/LogoCPXyoutube.png" alt="Complexo Roleplay Logo" />
+                    </div>
+                    <div class="server-info">
+                        <h3>Complexo Roleplay</h3>
+                        <p>Verificação falhou • Tente novamente</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Criar partículas flutuantes
+        function createParticles() {
+            const particleCount = 20; 
+            
+            for (let i = 0; i < particleCount; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.animationDelay = Math.random() * 7 + 's'; 
+                    particle.style.animationDuration = (Math.random() * 4 + 6) + 's'; 
+                    document.body.appendChild(particle);
+
+                    // Remove particle after animation
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.parentNode.removeChild(particle);
+                        }
+                    }, 12000); 
+                }, i * 300); 
+            }
+        }
+
+        // Função para fechar a janela
+        function closeWindow() {
+            window.close();
+        }
+
+        // Inicializar efeitos
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            
+            // Recriar partículas periodicamente
+            setInterval(createParticles, 10000); 
+        });
+    </script>
+    <script src="java.js"></script>
+</body>
+</html>

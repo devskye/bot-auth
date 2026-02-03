@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    /* General */
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+
+    /* Language & Runtime */
+    "target": "ESNext",
+    "lib": ["ESNext"],
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    /* Lint / Safety */
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "noEmitOnError": true,
+
+    /* Build */
+    "rootDir": ".",
+    "outDir": "./build",
+
+    /* Path Aliases */
+    "baseUrl": "./src",
+    "paths": {
+      "#database": ["database/index.ts"],
+      "#base": ["discord/base/index.ts"],
+      "#functions": ["functions/index.ts"],
+      "#menus": ["menus/index.ts"],
+      "#settings": ["settings/index.ts"],
+      "#tools": ["tools/index.ts"],
+      "#server": ["server/index.ts"],
+      "#lib": ["lib/index.ts"],
+      "#emojis": ["../emojis.json"],
+      "#types/*": ["@types/*"]
+    }
+  },
+  "include": ["src", "prisma.config.ts"],
+  "exclude": ["node_modules"]
+}
